@@ -64,25 +64,31 @@ class Api {
     .then(this._checkRequest);
   }
 
-  likeCard(cardItem) {
-    return fetch(`${this._host}/cards/${cardItem._id}/likes`, {
+  changeLikeCardStatus(id, isLiked) {
+    if(isLiked) {
+      return this.unlikeCard(id);
+    }
+    return this.likeCard(id);
+  }
+
+  likeCard(id) {
+    return fetch(`${this._host}/cards/${id}/likes`, {
       method: 'PUT',
       headers: this._headers,
-      body: JSON.stringify(cardItem.likes),
     })
     .then(this._checkRequest);
   }
 
-  unlikeCard(cardItem) {
-    return fetch(`${this._host}/cards/${cardItem._id}/likes`, {
+  unlikeCard(id) {
+    return fetch(`${this._host}/cards/${id}/likes`, {
       method: 'DELETE',
       headers: this._headers,
     })
     .then(this._checkRequest);
   }
 
-  deleteCard(cardItem) {
-    return fetch(`${this._host}/cards/${cardItem._id}`, {
+  deleteCard(id) {
+    return fetch(`${this._host}/cards/${id}`, {
       method: 'DELETE',
       headers: this._headers,
     })
