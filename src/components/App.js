@@ -11,15 +11,21 @@ import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isFullscreenPopupOpen, setIsFullscreenPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [isFullscreenPopupOpen, setIsFullscreenPopupOpen] =
+    React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
 
   const [renderLoading, setRenderLoading] = React.useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState({ name: "", link: "" });
+  const [selectedCard, setSelectedCard] = React.useState({
+    name: "",
+    link: "",
+  });
   const [removableCard, setRemovableCard] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
@@ -41,15 +47,23 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id)
+    api
+      .deleteCard(card._id)
       .then(() => {
         setCards(cards.filter((item) => item !== card));
       })
@@ -75,10 +89,12 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
-        setRenderLoading(false);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setRenderLoading(false);
       })
   }
 
@@ -91,10 +107,12 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
-        setRenderLoading(false);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setRenderLoading(false);
       })
   }
 
@@ -107,6 +125,11 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
         setRenderLoading(false);
       })
   }
